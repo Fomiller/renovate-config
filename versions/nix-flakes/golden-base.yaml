@@ -5,4 +5,4 @@
 repo: github.com/Fomiller/flake-hub
 dir: golden-base
 sourceUrl: https://github.com/Fomiller/flake-hub
-version: golden-base-0.6.0
+version: golden-base-0.7.0
