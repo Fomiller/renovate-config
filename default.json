@@ -11,5 +11,9 @@
   "prConcurrentLimit": 7,
   "prHourlyLimit": 4,
   "rebaseWhen": "behind-base-branch",
+  "automerge": true,
+  "automergeType": "pr",
+  "automergeStrategy": "squash",
+  "platformAutomerge": false,
   "gitIgnoredAuthors": ["41898282+github-actions[bot]@users.noreply.github.com"]
 }

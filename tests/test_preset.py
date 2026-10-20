@@ -92,3 +92,10 @@ def test_one_open_pr_per_pack_always_fits():
     would hold a promoted bump back behind the others for no reason."""
     packs = list((ROOT / "versions/nix-flakes").glob("*.yaml"))
     assert DEFAULT["prConcurrentLimit"] >= len(packs)
+
+
+def test_automerge_waits_for_every_check():
+    # No repo has required checks, so GitHub's own auto-merge would merge at once.
+    assert DEFAULT["automerge"] is True
+    assert DEFAULT["platformAutomerge"] is False
+    assert "ignoreTests" not in DEFAULT
