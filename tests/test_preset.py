@@ -54,15 +54,15 @@ def test_package_name_is_the_pack_so_the_url_is_per_pack():
     for dep in deps():
         assert dep["packageName"] == dep["depName"]
         url = DATASOURCE["defaultRegistryUrlTemplate"].replace("{{packageName}}", dep["packageName"])
-        assert url == f"https://raw.githubusercontent.com/Fomiller/renovate-config/main/versions/nix-flakes/{dep['depName']}.yaml"
+        assert url == f"https://api.github.com/repos/Fomiller/renovate-config/contents/versions/nix-flakes/{dep['depName']}.yaml"
 
 
 def test_datasource_reads_the_version_file_fields():
     assert MANAGER["datasourceTemplate"] == "custom.flake-hub-pack"
-    assert DATASOURCE["format"] == "yaml"
+    assert DATASOURCE["format"] == "json"
     transform = DATASOURCE["transformTemplates"][0]
     for field in ("sourceUrl", "dir", "version"):
-        assert field in transform
+        assert f"/^{field}:" in transform
 
 
 def test_another_packs_tag_is_never_compatible():
