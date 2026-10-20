@@ -10,13 +10,13 @@ project:
 # tag prefix. NewestTag, not SemVer: a name-prefixed tag does not parse as
 # semver.
 gitRepos:
-  - { name: golden-engine,  git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-engine-' } }
-  - { name: golden-base,    git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-base-' } }
-  - { name: golden-github,  git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-github-' } }
-  - { name: golden-service, git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-service-' } }
-  - { name: golden-infra,   git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-infra-' } }
-  - { name: golden-argocd,  git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-argocd-' } }
-  - { name: golden-docs,    git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-docs-' } }
+  - { name: golden-engine,  git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-engine-[0-9]+\.[0-9]+\.[0-9]+$' } }
+  - { name: golden-base,    git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-base-[0-9]+\.[0-9]+\.[0-9]+$' } }
+  - { name: golden-github,  git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-github-[0-9]+\.[0-9]+\.[0-9]+$' } }
+  - { name: golden-service, git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-service-[0-9]+\.[0-9]+\.[0-9]+$' } }
+  - { name: golden-infra,   git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-infra-[0-9]+\.[0-9]+\.[0-9]+$' } }
+  - { name: golden-argocd,  git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-argocd-[0-9]+\.[0-9]+\.[0-9]+$' } }
+  - { name: golden-docs,    git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-docs-[0-9]+\.[0-9]+\.[0-9]+$' } }
 
 warehouses:
   - { name: golden-engine,  interval: 5m0s, gitRepos: [golden-engine],  updatePaths: [{ path: versions/nix-flakes/golden-engine.yaml,  rootRelative: true, updates: [{ key: version, source: golden-engine }] }] }

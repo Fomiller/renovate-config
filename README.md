@@ -23,6 +23,8 @@ The Kargo UI does the same thing.
 
 ## Add a pack
 
+- Name it `golden-<something>`. The preset's match string and versioning only
+  match `golden-*`, so any other name is never updated.
 - Add `versions/nix-flakes/<pack>.yaml` with `version` and the other keys from
   an existing file.
 - In `argocd/overlays/prod/values.kargo.yaml`, add an entry named `<pack>` to

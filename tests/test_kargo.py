@@ -1,3 +1,5 @@
+import re
+
 import yaml
 
 from conftest import ROOT
@@ -21,12 +23,17 @@ def test_each_warehouse_writes_only_its_own_file():
 
 
 def test_each_git_source_sees_only_its_own_tags():
-    """Every pack is tagged on one repo. Without the anchor a warehouse would
-    see every pack's tags."""
+    """Every pack is tagged on one repo. Without both anchors a warehouse would
+    see other packs' tags, including a longer name such as golden-service-mesh."""
     for g in VALUES["gitRepos"]:
+        name = g["name"]
+        allow = g["git"]["allowTags"]
         assert g["git"]["repoURL"] == "https://github.com/Fomiller/flake-hub.git"
-        assert g["git"]["allowTags"] == f"^{g['name']}-"
+        assert allow == f"^{name}-[0-9]+\\.[0-9]+\\.[0-9]+$"
         assert g["git"]["commitSelectionStrategy"] == "NewestTag"
+        assert re.search(allow, f"{name}-1.22.333")
+        assert not re.search(allow, f"{name}-mesh-1.0.0")
+        assert not re.search(allow, f"{name}-1.0.0-rc1")
 
 
 def test_one_release_stage_promoted_by_hand():
