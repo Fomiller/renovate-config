@@ -8,8 +8,8 @@
   "semanticCommitType": "chore",
   "semanticCommitScope": "deps",
   "labels": ["dependencies"],
-  "prConcurrentLimit": 3,
-  "prHourlyLimit": 2,
+  "prConcurrentLimit": 7,
+  "prHourlyLimit": 4,
   "rebaseWhen": "behind-base-branch",
   "gitIgnoredAuthors": ["41898282+github-actions[bot]@users.noreply.github.com"]
 }

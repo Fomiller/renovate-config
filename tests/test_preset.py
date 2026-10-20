@@ -85,3 +85,10 @@ def test_default_extends_the_preset_by_full_path():
 
 def test_regenerate_commits_do_not_stop_renovate_updating_its_pr():
     assert DEFAULT["gitIgnoredAuthors"] == ["41898282+github-actions[bot]@users.noreply.github.com"]
+
+
+def test_one_open_pr_per_pack_always_fits():
+    """Kargo promotion is the gate. A concurrent limit below the pack count
+    would hold a promoted bump back behind the others for no reason."""
+    packs = list((ROOT / "versions/nix-flakes").glob("*.yaml"))
+    assert DEFAULT["prConcurrentLimit"] >= len(packs)
