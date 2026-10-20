@@ -1,0 +1,6 @@
+# What homelab's services ApplicationSet reads to build this repo's Argo CD
+# Application. Nothing is deployed from here except the Kargo project.
+name: renovate-config
+env: prod
+namespace: renovate-config
+notifications: ""

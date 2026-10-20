@@ -1,0 +1,8 @@
+# Kargo writes `version` when golden-base is promoted to the release stage. Do not edit it by hand.
+#
+# Renovate reads this file to decide which golden-base tag consumer repos pin.
+# `sourceUrl` and `dir` let it pull release notes into the PR body.
+repo: github.com/Fomiller/flake-hub
+dir: golden-base
+sourceUrl: https://github.com/Fomiller/flake-hub
+version: golden-base-0.6.0

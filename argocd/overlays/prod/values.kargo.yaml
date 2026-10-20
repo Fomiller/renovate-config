@@ -1,0 +1,46 @@
+# The pack promotion pipeline, rendered by kargo-project-chart. Promoting a
+# pack writes its tag into versions/nix-flakes/<pack>.yaml, and Renovate reads
+# that file. Nothing reaches a consumer repo until someone promotes it.
+
+project:
+  name: renovate-config
+  repoURL: https://github.com/Fomiller/renovate-config.git
+
+# One source per pack. They all read flake-hub, so each is anchored to its own
+# tag prefix. NewestTag, not SemVer: a name-prefixed tag does not parse as
+# semver.
+gitRepos:
+  - { name: golden-engine,  git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-engine-' } }
+  - { name: golden-base,    git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-base-' } }
+  - { name: golden-github,  git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-github-' } }
+  - { name: golden-service, git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-service-' } }
+  - { name: golden-infra,   git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-infra-' } }
+  - { name: golden-argocd,  git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-argocd-' } }
+  - { name: golden-docs,    git: { repoURL: https://github.com/Fomiller/flake-hub.git, commitSelectionStrategy: NewestTag, allowTags: '^golden-docs-' } }
+
+warehouses:
+  - { name: golden-engine,  interval: 5m0s, gitRepos: [golden-engine],  updatePaths: [{ path: versions/nix-flakes/golden-engine.yaml,  rootRelative: true, updates: [{ key: version, source: golden-engine }] }] }
+  - { name: golden-base,    interval: 5m0s, gitRepos: [golden-base],    updatePaths: [{ path: versions/nix-flakes/golden-base.yaml,    rootRelative: true, updates: [{ key: version, source: golden-base }] }] }
+  - { name: golden-github,  interval: 5m0s, gitRepos: [golden-github],  updatePaths: [{ path: versions/nix-flakes/golden-github.yaml,  rootRelative: true, updates: [{ key: version, source: golden-github }] }] }
+  - { name: golden-service, interval: 5m0s, gitRepos: [golden-service], updatePaths: [{ path: versions/nix-flakes/golden-service.yaml, rootRelative: true, updates: [{ key: version, source: golden-service }] }] }
+  - { name: golden-infra,   interval: 5m0s, gitRepos: [golden-infra],   updatePaths: [{ path: versions/nix-flakes/golden-infra.yaml,   rootRelative: true, updates: [{ key: version, source: golden-infra }] }] }
+  - { name: golden-argocd,  interval: 5m0s, gitRepos: [golden-argocd],  updatePaths: [{ path: versions/nix-flakes/golden-argocd.yaml,  rootRelative: true, updates: [{ key: version, source: golden-argocd }] }] }
+  - { name: golden-docs,    interval: 5m0s, gitRepos: [golden-docs],    updatePaths: [{ path: versions/nix-flakes/golden-docs.yaml,    rootRelative: true, updates: [{ key: version, source: golden-docs }] }] }
+
+stages:
+  # Promoted by hand: the click is the gate. No argocd block, because nothing
+  # deploys from these files; the commit is the whole promotion.
+  - name: release
+    color: green
+    warehouses: [golden-engine, golden-base, golden-github, golden-service, golden-infra, golden-argocd, golden-docs]
+    env: prod
+    git:
+      repoURL: https://github.com/Fomiller/renovate-config.git
+      branch: main
+
+# Git sources only. No image or chart subscriptions, so no registry credential.
+credentials:
+  ecr-image:
+    enabled: false
+  ecr-chart:
+    enabled: false
