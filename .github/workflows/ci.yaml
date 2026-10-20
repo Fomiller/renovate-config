@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    uses: Fomiller/gh-actions/.github/workflows/nix-flake-check.yaml@main
+    with:
+      flake-dirs: '["."]'
+
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Pinned to the version the cluster runs, so CI and the bot agree.
+      - run: |
+          shopt -s globstar
+          npx --yes --package renovate@44.171.8 -- renovate-config-validator --strict default.json presets/**/*.json
