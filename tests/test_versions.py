@@ -42,3 +42,13 @@ def test_every_version_file_says_kargo_owns_it():
     for pack in PACKS:
         text = (ROOT / f"versions/nix-flakes/{pack}.yaml").read_text()
         assert "Kargo writes `version`" in text.splitlines()[0]
+
+
+# The datasource reads these lines with a regex, not a YAML parser, so each
+# field must sit unquoted at the start of its line.
+def test_transform_regexes_read_the_same_values_as_yaml():
+    for pack in PACKS:
+        text = (ROOT / f"versions/nix-flakes/{pack}.yaml").read_text()
+        for field in ("dir", "sourceUrl", "version"):
+            m = re2.search(rf"(?m)^{field}:\s*(\S+)", text)
+            assert m is not None and m.group(1) == load(pack)[field], (pack, field)

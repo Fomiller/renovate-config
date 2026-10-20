@@ -3,10 +3,10 @@
   "description": "Bumps flake-hub pack pins in flake.nix to the version Kargo promoted into versions/nix-flakes/<pack>.yaml. A pin moves only after a promotion, never on a bare tag.",
   "customDatasources": {
     "flake-hub-pack": {
-      "defaultRegistryUrlTemplate": "https://raw.githubusercontent.com/Fomiller/renovate-config/main/versions/nix-flakes/{{packageName}}.yaml",
-      "format": "yaml",
+      "defaultRegistryUrlTemplate": "https://api.github.com/repos/Fomiller/renovate-config/contents/versions/nix-flakes/{{packageName}}.yaml",
+      "format": "json",
       "transformTemplates": [
-        "{ \"sourceUrl\": sourceUrl, \"sourceDirectory\": dir, \"releases\": [ { \"version\": version } ] }"
+        "( $y := $base64decode(content); { \"sourceUrl\": $match($y, /^sourceUrl:\\s*(\\S+)/m).groups[0], \"sourceDirectory\": $match($y, /^dir:\\s*(\\S+)/m).groups[0], \"releases\": [ { \"version\": $match($y, /^version:\\s*(\\S+)/m).groups[0] } ] } )"
       ]
     }
   },
