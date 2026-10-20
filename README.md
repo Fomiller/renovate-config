@@ -39,6 +39,19 @@ The tests fail if the version files and warehouses do not match.
 would edit files the generator owns, and the drift check would fail. The Nix
 manager is off for the same reason.
 
+## Automerge
+
+Renovate merges its own PR once every check on the newest commit is green.
+A pin bump first fails Drift Check, so it cannot merge until Regenerate has
+pushed the fix and the checks pass again.
+
+`platformAutomerge` is off because no repo has required checks. GitHub's own
+auto-merge would merge the PR before any check ran. The cost is a delay of up
+to one Renovate run, which is 15 minutes.
+
+The Regenerate commit does not stop the merge. Its author is in
+`gitIgnoredAuthors`, so Renovate still treats the branch as its own.
+
 ## Why `version` is the full tag
 
 The pins in `flake.nix` use `ref=refs/tags/<pack>-<x.y.z>`. Storing the whole
