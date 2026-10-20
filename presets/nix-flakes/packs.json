@@ -1,0 +1,33 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Bumps flake-hub pack pins in flake.nix to the version Kargo promoted into versions/nix-flakes/<pack>.yaml. A pin moves only after a promotion, never on a bare tag.",
+  "customDatasources": {
+    "flake-hub-pack": {
+      "defaultRegistryUrlTemplate": "https://raw.githubusercontent.com/Fomiller/renovate-config/main/versions/nix-flakes/{{packageName}}.yaml",
+      "format": "yaml",
+      "transformTemplates": [
+        "{ \"sourceUrl\": sourceUrl, \"sourceDirectory\": dir, \"releases\": [ { \"version\": version } ] }"
+      ]
+    }
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "flake-hub pack pins",
+      "managerFilePatterns": ["/(^|/)flake\\.nix$/"],
+      "matchStrings": [
+        "(?<depName>golden-[a-z0-9-]+)\\.url\\s*=\\s*\"github:Fomiller/flake-hub\\?dir=golden-[a-z0-9-]+&ref=refs/tags/(?<currentValue>golden-[a-z0-9-]+-[0-9]+\\.[0-9]+\\.[0-9]+)\""
+      ],
+      "packageNameTemplate": "{{{depName}}}",
+      "datasourceTemplate": "custom.flake-hub-pack",
+      "versioningTemplate": "regex:^(?<compatibility>golden-[a-z0-9-]+)-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["custom.flake-hub-pack"],
+      "commitMessageTopic": "{{depName}}",
+      "commitMessageExtra": "to {{{newValue}}}"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "What every Fomiller repo extends. Only the custom pack-pin manager runs: any other manager would edit files the generator owns and fail the drift check.",
+  "extends": ["github>Fomiller/renovate-config//presets/nix-flakes/packs"],
+  "enabledManagers": ["custom.regex"],
+  "nix": { "enabled": false },
+  "semanticCommits": "enabled",
+  "semanticCommitType": "chore",
+  "semanticCommitScope": "deps",
+  "labels": ["dependencies"],
+  "prConcurrentLimit": 3,
+  "prHourlyLimit": 2,
+  "rebaseWhen": "behind-base-branch",
+  "gitIgnoredAuthors": ["41898282+github-actions[bot]@users.noreply.github.com"]
+}

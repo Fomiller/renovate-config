@@ -1,0 +1,8 @@
+# Kargo writes `version` when golden-engine is promoted to the release stage. Do not edit it by hand.
+#
+# Renovate reads this file to decide which golden-engine tag consumer repos pin.
+# `sourceUrl` and `dir` let it pull release notes into the PR body.
+repo: github.com/Fomiller/flake-hub
+dir: golden-engine
+sourceUrl: https://github.com/Fomiller/flake-hub
+version: golden-engine-0.5.0
